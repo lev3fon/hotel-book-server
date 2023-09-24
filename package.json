@@ -30,6 +30,7 @@
     "body-parser": "^1.20.2",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
+    "dayjs": "^1.11.10",
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "nanoid": "3.3.6",
