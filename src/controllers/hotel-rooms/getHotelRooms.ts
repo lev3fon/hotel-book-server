@@ -3,6 +3,7 @@ import {APIError, cruds, TWrapController} from "../../utils/api-helpers";
 import dbModels from "../../db-models";
 import {Op} from "sequelize";
 import {sequelize} from "../../utils/dbConnect";
+import {BookingStatuses} from "../../db-models/bookings";
 
 export const getHotelRooms = (): TWrapController => {
   return async (req: Request) => {
@@ -34,6 +35,7 @@ export const getHotelRooms = (): TWrapController => {
 
       const bookings = await dbModels.Booking.findAll({
         where: {
+          status: { [Op.ne]: BookingStatuses.cancelled },
           [Op.or]: [
             {
               [Op.and]: [

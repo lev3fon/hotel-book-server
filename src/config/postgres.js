@@ -1,7 +1,4 @@
-import { Options } from 'sequelize'
-
-
-const postgresConfig: Options = {
+const postgresConfig = {
   username: process.env.HB_PG_USER || 'postgres',
   password: process.env.HB_PG_PASSWORD || '12345',
   database: process.env.HB_PG_DB || 'postgres',
@@ -11,4 +8,4 @@ const postgresConfig: Options = {
   port: 5432,
 }
 
-export default postgresConfig
+module.exports = postgresConfig
