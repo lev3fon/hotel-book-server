@@ -17,7 +17,7 @@ app.get('/', wrap(cruds.listEntity(dbModels.Booking, {
   }
 })))
 
-app.get('/strId', wrap(cruds.getEntity(dbModels.Booking, {
+app.get('/:strId', wrap(cruds.getEntity(dbModels.Booking, {
   hooks: { afterFind: afterFindBooking }
 })))
 
@@ -27,7 +27,7 @@ app.post('/', wrap(cruds.createEntity(dbModels.Booking, {
   }
 })))
 
-app.put('/strId', wrap(cruds.updateEntity(dbModels.Booking, {
+app.put('/:strId', wrap(cruds.updateEntity(dbModels.Booking, {
   hooks: { afterUpdate: afterFindBooking }
 })))
 

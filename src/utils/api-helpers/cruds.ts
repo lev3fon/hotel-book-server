@@ -273,7 +273,7 @@ const createEntity = <T extends Model>(model: ModelDefinedNext<T>, options?: TCr
       return omitHiddenProps(model, mutateEntity)
     }
 
-    return omitHiddenProps(model, entity)
+    return omitHiddenProps(model, entity.get({ plain: true }))
   }
 }
 
@@ -340,7 +340,7 @@ const addCrudRoutes = <T extends Model>(app: Router, model: ModelDefinedNext<T>,
     listEntity(model, {searchField, ...options?.listEntityOptions})
   ))
 
-  app.get(`/${options?.getEntityOptions?.searchField || searchField}`, wrap(
+  app.get(`/:${options?.getEntityOptions?.searchField || searchField}`, wrap(
     ...generalMiddlewares, ...(options?.getEntityOptions?.middlewares || []),
     getEntity(model, {searchField, ...options?.getEntityOptions})
   ))
@@ -350,12 +350,12 @@ const addCrudRoutes = <T extends Model>(app: Router, model: ModelDefinedNext<T>,
     createEntity(model, {searchField, ...options?.createEntityOptions})
   ))
 
-  app.put(`/${options?.updateEntityOptions?.searchField || searchField}`, wrap(
+  app.put(`/:${options?.updateEntityOptions?.searchField || searchField}`, wrap(
     ...generalMiddlewares, ...(options?.updateEntityOptions?.middlewares || []),
     updateEntity(model, {searchField, ...options?.updateEntityOptions})
   ))
 
-  app.delete(`/${options?.deleteEntityOptions?.searchField || searchField}`, wrap(
+  app.delete(`/:${options?.deleteEntityOptions?.searchField || searchField}`, wrap(
     ...generalMiddlewares, ...(options?.deleteEntityOptions?.middlewares || []),
     deleteEntity(model, {searchField, ...options?.deleteEntityOptions})
   ))

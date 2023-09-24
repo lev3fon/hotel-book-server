@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 
 module.exports = {
   async up ({ context: queryInterface }) {
-    await queryInterface.createTable('Clients', {
+    await queryInterface.createTable('Bookings', {
       id: {
         allowNull: false,
         autoIncrement: true,
