@@ -289,7 +289,7 @@ const updateEntity = <T extends Model>(model: ModelDefinedNext<T>, options?: TUp
     let plain = req.body as T
 
     // @ts-ignore
-    const existCount = await model.count({where: {[searchField]: searchField}}) as number
+    const existCount = await model.count({where: {[searchField]: searchVal}}) as number
 
     if (existCount === 0) {
       throw new APIError('not_found', 404)
@@ -300,14 +300,17 @@ const updateEntity = <T extends Model>(model: ModelDefinedNext<T>, options?: TUp
     }
 
     // @ts-ignore
-    const [, entities] = await model.update(omitImmutableProps(model, plain), {where: {[searchField]: searchVal}})
-    let entity = entities[0].get({plain: true})
+    await model.update(omitImmutableProps(model, plain), {where: {[searchField]: searchVal}})
+
+    // @ts-ignore
+    const entity = await model.findOne({where: {[searchField]: searchVal}})
 
     if (options?.hooks?.afterUpdate) {
-      entity = await options.hooks.afterUpdate(entity, req)
+      const mutatedEntity = await options.hooks.afterUpdate(entity?.get({ plain: true }), req)
+      return omitHiddenProps(model, mutatedEntity)
     }
 
-    return omitHiddenProps(model, entity)
+    return omitHiddenProps(model, entity?.get({ plain: true }))
   }
 }
 

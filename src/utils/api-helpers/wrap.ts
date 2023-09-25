@@ -64,9 +64,9 @@ export const wrap: TWrap = (...controllers) =>
       logger.error({ error: {...err, message: err.message} }, 'Exception_while_processing_request')
 
       if (err instanceof APIError) {
-        res.json({ message: err.message }).status(err.status || 500)
+       return res.json({ message: err.message }).status(err.status || 500)
       } else {
-        res.send('Internal server error').status(500)
+        return res.send('Internal server error').status(500)
       }
     }
   }

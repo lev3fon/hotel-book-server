@@ -23,7 +23,8 @@ app.get('/:strId', wrap(cruds.getEntity(dbModels.Booking, {
 
 app.post('/', wrap(cruds.createEntity(dbModels.Booking, {
   hooks: {
-    beforeCreate: beforeCreateBooking
+    beforeCreate: beforeCreateBooking,
+    afterCreate: afterFindBooking
   }
 })))
 
