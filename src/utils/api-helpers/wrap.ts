@@ -60,7 +60,8 @@ export const wrap: TWrap = (...controllers) =>
 
       return res.json(result).status(200)
     } catch (err) {
-      logger.error({ error: err }, 'Exception_while_processing_request')
+      // @ts-ignore
+      logger.error({ error: {...err, message: err.message} }, 'Exception_while_processing_request')
 
       if (err instanceof APIError) {
         res.json({ message: err.message }).status(err.status || 500)

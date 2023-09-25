@@ -36,20 +36,22 @@ export const getHotelRooms = (): TWrapController => {
       const bookings = await dbModels.Booking.findAll({
         where: {
           status: { [Op.ne]: BookingStatuses.cancelled },
-          [Op.or]: [
-            {
-              [Op.and]: [
-                {checkInAt: {[Op.lt]: checkInAtDate}},
-                {checkOutAt: {[Op.lt]: checkOutAtDate}}
-              ]
-            },
-            {
-              [Op.and]: [
-                {checkInAt: {[Op.gt]: checkInAtDate}},
-                {checkOutAt: {[Op.gt]: checkOutAtDate}}
-              ]
-            }
-          ]
+          [Op.not]: {
+            [Op.or]: [
+              {
+                [Op.and]: [
+                  {checkInAt: {[Op.lt]: checkInAtDate}},
+                  {checkOutAt: {[Op.lt]: checkOutAtDate}}
+                ]
+              },
+              {
+                [Op.and]: [
+                  {checkInAt: {[Op.gt]: checkInAtDate}},
+                  {checkOutAt: {[Op.gt]: checkOutAtDate}}
+                ]
+              }
+            ]
+          }
         },
         attributes: [
           [sequelize.fn('DISTINCT', sequelize.col('hotelRoomStrId')), 'hotelRoomStrId']
@@ -66,6 +68,8 @@ export const getHotelRooms = (): TWrapController => {
       },
       limit: limit || cruds.DefaultLimit,
       offset: offset || 0,
+      ...(sortBy ? {sortBy} : {}),
+      ...(sort ? {sort} : {}),
       raw: true,
     })
 

@@ -4,7 +4,10 @@ import {APIError, TWrapController, wrap} from "./wrap";
 import {ModelDefinedNext} from "../../db-models/default.type";
 import _ from "lodash";
 import {logger} from "./logger";
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import dayjs from "dayjs";
+
+dayjs.extend(customParseFormat)
 
 
 const DefaultLimit = 100
@@ -56,7 +59,8 @@ const parseQuery = (query: unknown) => {
 }
 
 const tryParseDate = (dateStr: string) => {
-  const res = dayjs(dateStr, 'DD-MM-YYYY-HH-MM')
+  const res = dayjs(dateStr, 'DD-MM-YYYY-HH-mm')
+
   if (res.isValid()) {
     return res.toDate()
   }

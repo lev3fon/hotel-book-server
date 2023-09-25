@@ -8,20 +8,22 @@ export const beforeCreateBooking = async (data: IBookingModel) => {
     where: {
       hotelRoomStrId: data.hotelRoomStrId,
       status: { [Op.ne]: BookingStatuses.cancelled },
-      [Op.or]: [
-        {
-          [Op.and]: [
-            {checkInAt: {[Op.lt]: data.checkInAt}},
-            {checkOutAt: {[Op.lt]: data.checkOutAt}}
-          ]
-        },
-        {
-          [Op.and]: [
-            {checkInAt: {[Op.gt]: data.checkInAt}},
-            {checkOutAt: {[Op.gt]: data.checkOutAt}}
-          ]
-        }
-      ]
+      [Op.not]: {
+        [Op.or]: [
+          {
+            [Op.and]: [
+              {checkInAt: {[Op.lt]: data.checkInAt}},
+              {checkOutAt: {[Op.lt]: data.checkInAt}}
+            ]
+          },
+          {
+            [Op.and]: [
+              {checkInAt: {[Op.gt]: data.checkOutAt}},
+              {checkOutAt: {[Op.gt]: data.checkOutAt}}
+            ]
+          }
+        ]
+      }
     },
   })
 
